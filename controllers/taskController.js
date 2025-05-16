@@ -28,21 +28,25 @@ exports.getAllTasks = async (req, res) => {
 // Update a task
 exports.updateTask = async (req, res) => {
   const { id } = req.params;
-  const { title, description, done } = req.body;  // use 'done' to match schema
+  const { title, description, done } = req.body;
+
   try {
     const updatedTask = await Task.findByIdAndUpdate(
       id,
-      { title, description, done },  // update description here
+      { title, description, done },
       { new: true }
     );
+
     if (!updatedTask) {
       return res.status(404).json({ message: 'Task not found' });
     }
+
     res.status(200).json(updatedTask);
   } catch (err) {
     res.status(500).json({ message: 'Error updating task', error: err });
   }
 };
+
 
 // Delete a task
 exports.deleteTask = async (req, res) => {

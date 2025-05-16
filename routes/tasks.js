@@ -21,10 +21,22 @@ router.post('/add', async (req, res) => {
 });
 
 // Mark task as done
-router.post('/done/:id', async (req, res) => {
-  await Task.findByIdAndUpdate(req.params.id, { done: true });
-  res.redirect('/');
+router.post('/tasks/:id/complete', async (req, res) => {
+  try {
+    const { completed } = req.body;
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      { done: completed },
+      { new: true }
+    );
+    res.json(updatedTask);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to update task status' });
+  }
 });
+
+
 
 // Delete task route
 router.post('/tasks/delete/:id', async (req, res) => {
@@ -49,5 +61,6 @@ router.post('/tasks/edit/:id', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 
 module.exports = router;

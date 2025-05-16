@@ -11,6 +11,7 @@ require('dotenv').config();          // loads .env
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 // ────────────────────────────────────────────────────────────
 // 2. Handlebars view engine

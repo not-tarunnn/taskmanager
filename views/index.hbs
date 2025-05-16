@@ -24,6 +24,16 @@
     <h3>{{this.title}}</h3>
     <p>{{this.description}}</p>
      
+     <label>
+    <input 
+  type="checkbox" 
+  class="task-completed-checkbox" 
+  data-task-id="{{_id}}" 
+  {{#if done}}checked{{/if}} 
+/>
+
+  </label>
+
     <div class="task-actions">
       <a href="/tasks/edit/{{this._id}}" class="btn edit-btn">Edit</a>
       <form action="/tasks/delete/{{this._id}}" method="POST" class="delete-form">
@@ -120,3 +130,26 @@ editModal.querySelector('.cancel-btn').addEventListener('click', e => {
 
 </script>
 
+
+<script>const checkbox = document.querySelector('.task-completed-checkbox');
+
+checkbox.addEventListener('change', async () => {
+  const taskId = checkbox.dataset.taskId;
+  const completed = checkbox.checked;
+
+  try {
+    const res = await fetch(`/tasks/${taskId}/complete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ completed })
+    });
+
+    if (!res.ok) throw new Error('Failed to update task status');
+
+    const updatedTask = await res.json();
+    console.log('Task updated:', updatedTask);
+  } catch (error) {
+    console.error(error);
+  }
+});
+</script>
