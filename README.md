@@ -1,5 +1,3 @@
-# taskmanager
-
 # Task Manager
 
 A lightweight and intuitive Task Manager web application designed to help you organize your daily tasks efficiently. Built using Node.js, Express.js, MongoDB for data storage, and Handlebars as the templating engine.
