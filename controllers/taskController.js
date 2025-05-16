@@ -6,7 +6,7 @@ exports.createTask = async (req, res) => {
   try {
     const newTask = new Task({
       title,
-      description,
+      description,  // description handled here
     });
     await newTask.save();
     res.status(201).json(newTask);
@@ -28,9 +28,13 @@ exports.getAllTasks = async (req, res) => {
 // Update a task
 exports.updateTask = async (req, res) => {
   const { id } = req.params;
-  const { title, description, completed } = req.body;
+  const { title, description, done } = req.body;  // use 'done' to match schema
   try {
-    const updatedTask = await Task.findByIdAndUpdate(id, { title, description, completed }, { new: true });
+    const updatedTask = await Task.findByIdAndUpdate(
+      id,
+      { title, description, done },  // update description here
+      { new: true }
+    );
     if (!updatedTask) {
       return res.status(404).json({ message: 'Task not found' });
     }

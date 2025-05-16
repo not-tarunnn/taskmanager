@@ -23,11 +23,15 @@
   <div class="task-card">
     <h3>{{this.title}}</h3>
     <p>{{this.description}}</p>
+     
     <div class="task-actions">
       <a href="/tasks/edit/{{this._id}}" class="btn edit-btn">Edit</a>
       <form action="/tasks/delete/{{this._id}}" method="POST" class="delete-form">
         <button type="submit" class="btn delete-btn">Delete</button>
       </form>
+    </div>
+    <div class="task-footer">
+      <small>🗓️ Created {{formatDate this.createdAt}}</small>
     </div>
   </div>
   {{/each}}

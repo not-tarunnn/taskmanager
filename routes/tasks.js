@@ -4,7 +4,7 @@ const Task = require('../models/Task');
 
 // View all tasks
 router.get('/', async (req, res) => {
-  const tasks = await Task.find().lean();
+  const tasks = await Task.find().sort({ createdAt: -1 }).lean();
   res.render('index', { tasks });
 }); 
 
