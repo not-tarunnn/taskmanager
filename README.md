@@ -25,6 +25,3 @@ Clone the repository and install dependencies:
 git clone https://github.com/your-username/task-manager.git
 cd task-manager
 npm install
-
-```bash
-npm start 
