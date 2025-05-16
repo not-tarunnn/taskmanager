@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="sidebar">
+    {{> sidebar }}
+  </div>
+
+<header class="top-header">
+  <div class="header-left">
+    <img src="/images/logo.png" alt="TaskKeep Logo" class="logo-img" />
+    <span class="logo-text">Task Manager</span>
+  </div>
+  <div class="header-center">
+    <input type="text" class="search-bar" placeholder="Search tasks..." />
+  </div>
+  <div class="header-right">
+    <span class="user-icon">👤</span>
+  </div>
+</header>
+
+<main class="main-content">
+<!-- Task list -->
+ <div class="tasks-container">
+  {{#each tasks}}
+  <div class="task-card">
+    <h3>{{this.title}}</h3>
+    <p>{{this.description}}</p>
+    <div class="task-actions">
+      <a href="/tasks/edit/{{this._id}}" class="btn edit-btn">Edit</a>
+      <form action="/tasks/delete/{{this._id}}" method="POST" class="delete-form">
+        <button type="submit" class="btn delete-btn">Delete</button>
+      </form>
+    </div>
+  </div>
+  {{/each}}
+</div>
+
+
+
+  <!-- Floating Add Button -->
+  <a href="#addTaskForm" class="floating-btn" id="openAddFormBtn">
+    <span class="material-icons">add</span>
+  </a>
+
+  <!-- Add Task Form (hidden by default, shows on #addTaskForm anchor) -->
+  <div id="addTaskForm" class="modal hidden">
+    <form action="/add" method="POST">
+      <h2>Add Task</h2>
+      <input type="text" name="title" placeholder="Task Title" required />
+      <textarea name="description" placeholder="Task Description"></textarea>
+      <button type="submit">Add Task</button>
+      <a href="#" class="cancel-btn">Cancel</a>
+    </form>
+  </div>
+
+  {{#if editTask}}
+  <!-- Edit Task Form (shown only when editing) -->
+  <div id="editTaskForm" class="modal">
+    <form action="/edit/{{editTask._id}}" method="POST">
+      <h2>Edit Task</h2>
+      <input type="text" name="title" value="{{editTask.title}}" required />
+      <textarea name="description">{{editTask.description}}</textarea>
+      <button type="submit">Save Changes</button>
+      <a href="/" class="cancel-btn">Cancel</a>
+    </form>
+  </div>
+  {{/if}}
+</main>
+  <script>
+  // Show the add task modal
+  document.getElementById('openAddFormBtn').addEventListener('click', () => {
+    document.getElementById('addTaskForm').classList.remove('hidden');
+  });
+
+  // Hide the add task modal
+  document.querySelector('#addTaskForm .cancel-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('addTaskForm').classList.add('hidden');
+  });
+</script>
+
+
+<script>
+  // Optional: if you want to make Cancel behave via JS instead of <a href="/">
+  const editCancel = document.querySelector('#editTaskForm .cancel-btn');
+  if (editCancel) {
+    editCancel.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = '/';
+    });
+  }
+</script>
+

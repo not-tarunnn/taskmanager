@@ -1,0 +1,12 @@
+{{#if editTask}}
+<!-- Edit Task Form (modal) -->
+<div id="editTaskForm" class="modal">
+  <form action="/edit/{{editTask._id}}" method="POST">
+    <h2>Edit Task</h2>
+    <input type="text" name="title" value="{{editTask.title}}" required />
+    <textarea name="description">{{editTask.description}}</textarea>
+    <button type="submit">Save Changes</button>
+    <a href="/" class="cancel-btn">Cancel</a>
+  </form>
+</div>
+{{/if}}

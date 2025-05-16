@@ -1,0 +1,83 @@
+<div class="container">
+  <div class="sidebar">
+    {{> sidebar }}
+  </div>
+
+
+<header class="top-header">
+  <div class="header-left">
+    <img src="/images/logo.png" alt="TaskKeep Logo" class="logo-img" />
+    <span class="logo-text">Task Manager</span>
+  </div>
+  <div class="header-center">
+    <input type="text" class="search-bar" placeholder="Search tasks..." />
+  </div>
+  <div class="header-right">
+    <span class="user-icon">👤</span>
+  </div>
+</header>
+
+<a href="javascript:void(0)" class="floating-btn" id="openFormBtn">
+  <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
+    <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+  </svg>
+</a>
+
+<!-- Hidden task form modal -->
+<div id="taskForm" class="modal hidden">
+  <form id="addTaskForm">
+    <h2>Add New Task</h2>
+    <input type="text" name="title" placeholder="Task Title" required />
+    <textarea name="description" placeholder="Task Description"></textarea>
+    <button type="submit">Add Task</button>
+    <button type="button" id="closeFormBtn">Cancel</button>
+  </form>
+</div>
+
+
+<script>
+const openBtn = document.getElementById('openFormBtn');
+const modal = document.getElementById('taskForm');
+const closeBtn = document.getElementById('closeFormBtn');
+const addTaskForm = document.getElementById('addTaskForm');
+
+openBtn.addEventListener('click', () => {
+  modal.classList.remove('hidden');
+});
+
+closeBtn.addEventListener('click', () => {
+  modal.classList.add('hidden');
+});
+
+// Handle form submission
+addTaskForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const title = addTaskForm.title.value.trim();
+  const description = addTaskForm.description.value.trim();
+
+  if (!title) return alert('Please enter a task title');
+
+  // Example: Send data to server via fetch API (adjust URL)
+  try {
+    const response = await fetch('/add', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({ title, description }),
+    });
+
+    if (response.ok) {
+      alert('Task added!');
+      modal.classList.add('hidden');
+      addTaskForm.reset();
+
+      // Optionally refresh the task list or reload page:
+      window.location.reload();
+    } else {
+      alert('Failed to add task');
+    }
+  } catch (err) {
+    alert('Error: ' + err.message);
+  }
+});
+<script/>
