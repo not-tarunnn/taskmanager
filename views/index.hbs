@@ -55,18 +55,16 @@
     </form>
   </div>
 
-  {{#if editTask}}
-  <!-- Edit Task Form (shown only when editing) -->
-  <div id="editTaskForm" class="modal">
-    <form action="/edit/{{editTask._id}}" method="POST">
-      <h2>Edit Task</h2>
-      <input type="text" name="title" value="{{editTask.title}}" required />
-      <textarea name="description">{{editTask.description}}</textarea>
-      <button type="submit">Save Changes</button>
-      <a href="/" class="cancel-btn">Cancel</a>
-    </form>
-  </div>
-  {{/if}}
+<div id="editTaskForm" class="modal hidden">
+  <form id="editForm" method="POST">
+    <h2>Edit Task</h2>
+    <input type="text" name="title" placeholder="Task Title" required />
+    <textarea name="description" placeholder="Task Description"></textarea>
+    <button type="submit">Save Changes</button>
+    <a href="#" class="cancel-btn">Cancel</a>
+  </form>
+</div>
+
 </main>
   <script>
   // Show the add task modal
@@ -83,13 +81,41 @@
 
 
 <script>
-  // Optional: if you want to make Cancel behave via JS instead of <a href="/">
-  const editCancel = document.querySelector('#editTaskForm .cancel-btn');
-  if (editCancel) {
-    editCancel.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.href = '/';
-    });
-  }
+  // Select all edit buttons
+const editButtons = document.querySelectorAll('.edit-btn');
+const editModal = document.getElementById('editTaskForm');
+const editForm = document.getElementById('editForm');
+
+editButtons.forEach(button => {
+  button.addEventListener('click', function(e) {
+    e.preventDefault();
+    // Get the task ID from the href or data attribute
+    const taskId = this.getAttribute('href').split('/').pop();
+    console.log('Editing task id:', taskId);
+
+    // Optional: Fetch the task data if not rendered on page already
+    // For demo, assume you have task title and description in data attributes:
+    const taskCard = this.closest('.task-card');
+    const title = taskCard.querySelector('h3').innerText;
+    const description = taskCard.querySelector('p').innerText;
+    
+    // Set form action dynamically
+    editForm.action = `/tasks/edit/${taskId}`;
+    
+    // Fill form fields
+    editForm.title.value = title;
+    editForm.description.value = description;
+    
+    // Show edit modal
+    editModal.classList.remove('hidden');
+  });
+});
+
+// Close edit modal on cancel
+editModal.querySelector('.cancel-btn').addEventListener('click', e => {
+  e.preventDefault();
+  editModal.classList.add('hidden');
+});
+
 </script>
 

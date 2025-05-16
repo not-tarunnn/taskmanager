@@ -36,5 +36,18 @@ router.post('/tasks/delete/:id', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+// Edit task route
+router.post('/tasks/edit/:id', async (req, res) => {
+  const { id } = req.params;
+  const { title, description } = req.body;
+  
+  try {
+    await Task.findByIdAndUpdate(id, { title, description });
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
 
 module.exports = router;
